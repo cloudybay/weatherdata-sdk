@@ -15,6 +15,18 @@ WD_API_SERVER_HOST = 'https://weatherdata.tw/'
 
 def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str = None):
 
+    if lat:
+        try:
+            float(lat)
+        except:
+            raise TypeError(f'could not convert {lat} to float, argument must be a latitude')
+
+    if lon:
+        try:
+            float(lon)
+        except:
+            raise TypeError(f'could not convert {lon} to float, argument must be a longitude')
+
     if lat is None and lon is None:
         if citytown:
             region_code = parse_city_town_to_region_code(citytown)
