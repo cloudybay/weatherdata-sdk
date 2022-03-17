@@ -1,7 +1,7 @@
 import re
 
 
-def parse(city_town):
+def parse_city_town_to_region_code(city_town):
     city_county_text = ['縣', '市']
     town_text = ['鄉', '市', '鎮', '區']
     city_text = ['台北', '新北', '桃園', '台中', '台南', '高雄', '基隆']

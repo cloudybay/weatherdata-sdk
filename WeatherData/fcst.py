@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 from WeatherData.util import parse_city_town_to_region_code
@@ -29,18 +29,20 @@ def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str 
         if dtime is None:
             dtime = datetime.utcnow()
             dtime = dtime.replace(tzinfo=pytz.UTC)
-            dtime = dtime.replace(minute=0, second=0, microsecond=0).isoformat()
+            dtime = dtime.replace(minute=0, second=0, microsecond=0)
         else:
             raise TypeError('argument dtime must be datetime, not string')
 
     if lat and lon and dtime:
         import requests
-        # http://gpu.cb:7705/api/obs/cb_grid/?lat=25.068025&lon=121.507228&from=2022-03-02T15:00&to=2022-03-02T15:00&
-        url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
+        _tau = dtime.hour % 6
+        _from = dtime - timedelta(hours=_tau)
+        _to = _from + timedelta(hours=6)
+        url = f'{WD_API_SERVER_HOST}api/fcst/cwb_wrf/?lat={lat}&lon={lon}&from={_from}&to={_to}'
         res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
-            # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
-            obs_data = res.json().get('data', [])[0]
+            # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
+            obs_data = res.json().get('data', [])
             return obs_data
 
 
