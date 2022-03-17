@@ -40,8 +40,11 @@ def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str 
         res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
             # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
-            obs_data = res.json().get('data', [])[0]
-            return obs_data
+            obs_data = res.json().get('data', None)
+            if obs_data:
+                return obs_data[0]
+            else:
+                return obs_data
 
 
 def get_wd_api_header():
