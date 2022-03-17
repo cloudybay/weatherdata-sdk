@@ -19,13 +19,13 @@ def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str 
         try:
             float(lat)
         except:
-            raise TypeError(f'could not convert {lat} to float, argument must be a latitude')
+            raise ValueError(f'could not convert {lat} to float, argument must be a latitude')
 
     if lon:
         try:
             float(lon)
         except:
-            raise TypeError(f'could not convert {lon} to float, argument must be a longitude')
+            raise ValueError(f'could not convert {lon} to float, argument must be a longitude')
 
     if lat is None and lon is None:
         if citytown:
