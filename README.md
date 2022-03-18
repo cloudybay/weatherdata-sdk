@@ -7,12 +7,20 @@
 ## 這是什麼?
 
 
-**WeatherData** 是收集了氣象局、農委會的開源氣象觀測資料以及安吉氣象決策的預報資料。
+**WeatherData** 是收集了氣象局的開放氣象資料以及安吉氣象決策的預報資料。
 
-所有資料都整合在 WeatherData 的後台伺服器中，使用這個套件就不需要再自行開發爬蟲爬取氣象局，隨便輸入一個經緯度或者縣市鄉鎮就可以取得天氣資料。
+所有資料都整合在 WeatherData 的後台伺服器中，使用這個套件就不需要再自行開發爬蟲爬取氣象局，只要輸入位置(經緯度或縣市鄉鎮名)，即可取得天氣資料。
+
+## Installation
+
+```shell
+
+$ pip install WeatherData
+
+```
 
 
-## Quickstart
+## Get start
 
 ```python
 >>> import WeatherData as wd
@@ -29,12 +37,56 @@
     'precp_hour': 0.0,
     'cloud': 0.28
 }
+
+>>> from datetime import datetime
+>>> wd.obs.get(lat=21., lon=124., dtime=datetime(2021,12,31))
+{
+    'lat': 21.0,
+    'lon': 124.0,
+    'dtime': '2021-12-31T00:00+00:00',
+    'ws': 0.0,
+    'tx': 0.0,
+    'rh': 0.0,
+    'pres': 0.0,
+    'wd': 270.0,
+    'precp_hour': 0.0,
+    'cloud': 0
+}
+
+>>> wd.fcst.get(lat=21., lon=124., dtime=datetime(2022,3, 20, 0, 0))
+{
+    'dtime': '2022-03-20T00:00:00+00:00',
+    'wd': 75.9,
+    'ws': 8.9,
+    'wg': 10.8,
+    'precp': 0.0,
+    'cloud': 95.2,
+    'tx': 24.0,
+    'rh': 85.6,
+    'pres': 1014.3,
+    'lat': 21.0,
+    'lon': 124.0
+}
 ```
+
+### 參數說明
+
+- dtime: 資料時間(UTC)
+- wd: 風向(方位角 0~360度 北向為0)
+- ws: 風速(m/s)
+- wg: 最大陣風風速(m/s)
+- prcep: 預報小時雨量(mm)
+- prcep_hour: 觀測小時雨量(mm)
+- cloud: 雲量 0~1
+- tx: 溫度(攝氏溫度)
+- rh: 相對濕度
+- pres: 大氣壓力(hPa)
+- lat: 緯度(度)
+- lon: 經度(度)
 
 ## 資料來源
 
 - [氣象資料開放平台](https://opendata.cwb.gov.tw/index)
-- [農業氣象觀測網監測系統](https://agr.cwb.gov.tw/)
 - [安吉氣象決策](https://www.weatherangel.com.tw/company/services2.php)
 
 所有預報資料均來自中央氣象局及安吉氣象決策公司等機構提供，本公司並未進行任何天氣預報。
