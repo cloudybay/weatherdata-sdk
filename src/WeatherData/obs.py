@@ -13,19 +13,19 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 WD_API_SERVER_HOST = 'https://weatherdata.tw/'
 
 
-def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str = None):
+def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: str = None):
 
     if lat:
-        try:
-            float(lat)
-        except:
-            raise ValueError(f'could not convert {lat} to float, argument must be a latitude')
+        if isinstance(lat, float):
+            lat = str(lat)
+        else:
+            raise TypeError(f'illegal argument type for {lat}, argument must be a float latitude')
 
     if lon:
-        try:
-            float(lon)
-        except:
-            raise ValueError(f'could not convert {lon} to float, argument must be a longitude')
+        if isinstance(lon, float):
+            lon = str(lon)
+        else:
+            raise TypeError(f'illegal argument type for {lon}, argument must be a float longitude')
 
     if lat is None and lon is None:
         if citytown:
