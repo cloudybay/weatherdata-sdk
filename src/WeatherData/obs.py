@@ -1,13 +1,12 @@
 import os
 from datetime import datetime
+
 import pytz
+import requests
 
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
-import urllib3
-# 讓local端開發，測試呼叫Func時不會出現InsecureRequestWarning: Unverified HTTPS request is being made
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 WD_API_SERVER_HOST = 'https://weatherdata.tw/'
 
@@ -45,10 +44,9 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
             raise TypeError('argument dtime must be datetime, not string')
 
     if lat and lon and dtime:
-        import requests
         # http://gpu.cb:7705/api/obs/cb_grid/?lat=25.068025&lon=121.507228&from=2022-03-02T15:00&to=2022-03-02T15:00&
         url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
-        res = requests.get(url, headers=get_wd_api_header(), verify=False)
+        res = requests.get(url, headers=get_wd_api_header())
         if res.status_code == 200:
             # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
             obs_data = res.json().get('data', None)

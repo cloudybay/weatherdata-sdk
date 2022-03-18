@@ -1,5 +1,5 @@
 
-
+conda create --name wd python=3.6
 ```python
 >>> import WeatherData as wd
 >>> wd.obs.get(citytown='台北市中正區')

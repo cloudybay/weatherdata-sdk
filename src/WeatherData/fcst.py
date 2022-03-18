@@ -1,13 +1,13 @@
 import os
 from datetime import datetime, timedelta
+
 import pytz
+import requests
 
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
-import urllib3
-# 讓local端開發，測試呼叫Func時不會出現InsecureRequestWarning: Unverified HTTPS request is being made
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 
 WD_API_SERVER_HOST = 'https://weatherdata.tw/'
 
@@ -45,9 +45,8 @@ def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str 
             raise TypeError('argument dtime must be datetime, not string')
 
     if lat and lon and dtime:
-        import requests
         url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
-        res = requests.get(url, headers=get_wd_api_header(), verify=False)
+        res = requests.get(url, headers=get_wd_api_header())
         if res.status_code == 200:
             # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
             fcst_data = res.json().get('data', None)
