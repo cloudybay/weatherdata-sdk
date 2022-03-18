@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../blob/dev/obs/Logo.png?raw=true">
+  <img src="./Logo.png?raw=true">
 </p>
 
 ---
@@ -32,6 +32,6 @@
 
 ## License
 
-- [License Detail](../LICENSE)
+- [License Detail](./LICENSE)
 
 - 本專案提供的所有內容均用於教育、非商業用途。資料僅供參考，對於資料內容任何錯誤、更新延誤或傳輸中斷，本公司均不負任何責任。
