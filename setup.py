@@ -30,6 +30,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/cloudybay/weatherdata-sdk",
     # packages=setuptools.find_packages(),
+    install_requires=['pytz'],
     packages=["WeatherData"],
     package_dir={"": "src"},
     classifiers=[
