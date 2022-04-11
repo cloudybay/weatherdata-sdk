@@ -13,7 +13,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 WD_API_SERVER_HOST = 'https://weatherdata.tw/'
 
 
-def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str = None):
+def get(lat: str = None, lon: str = None, citytown: str = None):
 
     if lat:
         if isinstance(lat, float):
@@ -35,27 +35,17 @@ def get(lat: str = None, lon: str = None, dtime: datetime = None, citytown: str 
         else:
             raise KeyError()
 
-    if isinstance(dtime, datetime):
-        dtime = dtime.replace(tzinfo=pytz.UTC)
-    else:
-        if dtime is None:
-            dtime = datetime.utcnow()
-            dtime = dtime.replace(tzinfo=pytz.UTC)
-            dtime = dtime.replace(minute=0, second=0, microsecond=0).isoformat()
-        else:
-            raise TypeError('argument dtime must be datetime, not string')
-
-    if lat and lon and dtime:
+    if lat and lon:
         import requests
-        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
+        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/?lat={lat}&lon={lon}'
         res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
             # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
             fcst_data = res.json().get('data', None)
             if fcst_data:
-                return fcst_data[0]
-            else:
                 return fcst_data
+            else:
+                return []
 
 def get_wd_api_header():
     token = 'caccfc7087e0441591b531ba944f06b6'
