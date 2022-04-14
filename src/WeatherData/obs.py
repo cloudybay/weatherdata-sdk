@@ -7,8 +7,11 @@ import requests
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
+import urllib3
+urllib3.disable_warnings()
 
-WD_API_SERVER_HOST = 'https://weatherdata.tw/'
+
+WD_API_SERVER_HOST = 'http://api.weatherdata.tw/'
 
 
 def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: str = None):
@@ -46,7 +49,7 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
     if lat and lon and dtime:
         # http://gpu.cb:7705/api/obs/cb_grid/?lat=25.068025&lon=121.507228&from=2022-03-02T15:00&to=2022-03-02T15:00&
         url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
-        res = requests.get(url, headers=get_wd_api_header())
+        res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
             # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
             obs_data = res.json().get('data', None)

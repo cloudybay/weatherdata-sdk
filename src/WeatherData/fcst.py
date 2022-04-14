@@ -7,12 +7,14 @@ import requests
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
+import urllib3
+urllib3.disable_warnings()
 
 
-WD_API_SERVER_HOST = 'https://weatherdata.tw/'
+WD_API_SERVER_HOST = 'http://api.weatherdata.tw/'
 
 
-def get(lat: str = None, lon: str = None, citytown: str = None):
+def get(lat: float = None, lon: float = None, citytown: str = None):
 
     if lat:
         if isinstance(lat, float):
@@ -36,7 +38,7 @@ def get(lat: str = None, lon: str = None, citytown: str = None):
 
     if lat and lon:
         url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/?lat={lat}&lon={lon}'
-        res = requests.get(url, headers=get_wd_api_header())
+        res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
             # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
             fcst_data = res.json().get('data', None)

@@ -11,7 +11,7 @@
 
 所有資料都整合在 WeatherData 的後台伺服器中，使用這個套件就不需要再自行開發爬蟲爬取氣象局，只要輸入位置(經緯度或縣市鄉鎮名)，即可取得天氣資料。
 
-## Installation
+## 安裝
 
 ```shell
 
@@ -20,11 +20,12 @@ $ pip install WeatherData
 ```
 
 
-## Get start
+## 如何開始
 
 ```python
 >>> import WeatherData as wd
 >>> wd.obs.get(citytown='台北市中正區')
+# 回傳最新一次觀測時間的資料
 {
     'lat': 25.046058,
     'lon': 121.516565,
@@ -40,6 +41,7 @@ $ pip install WeatherData
 
 >>> from datetime import datetime
 >>> wd.obs.get(lat=21., lon=124., dtime=datetime(2021,12,31))
+# 回傳指定觀測時間的資料
 {
     'lat': 21.0,
     'lon': 124.0,
@@ -53,20 +55,45 @@ $ pip install WeatherData
     'cloud': 0
 }
 
->>> wd.fcst.get(lat=21., lon=124., dtime=datetime(2022,3, 20, 0, 0))
-{
-    'dtime': '2022-03-20T00:00:00+00:00',
-    'wd': 75.9,
-    'ws': 8.9,
-    'wg': 10.8,
+>>> wd.fcst.get(lat=21., lon=124.)
+# 回傳最新一次預報的所有資料，總共資料長度 14 天，每小時一筆，共 336 筆資料
+[{
+    'dtime': '2022-04-13T00:00:00+00:00',
+    'wd': 97.5,
+    'ws': 6.1,
+    'wg': 7.3,
+    'precp': -999.0,
+    'cloud': 50.9,
+    'tx': 25.5,
+    'rh': 73.5,
+    'pres': 1008.5,
+    'lat': 20.0,
+    'lon': 120.0
+}, {
+    'dtime': '2022-04-13T01:00:00+00:00',
+    'wd': 99.1,
+    'ws': 5.5,
+    'wg': 6.5,
     'precp': 0.0,
-    'cloud': 95.2,
-    'tx': 24.0,
-    'rh': 85.6,
-    'pres': 1014.3,
-    'lat': 21.0,
-    'lon': 124.0
-}
+    'cloud': 47.8,
+    'tx': 25.6,
+    'rh': 75.0,
+    'pres': 1008.4,
+    'lat': 20.0,
+    'lon': 120.0
+}, {
+    'dtime': '2022-04-13T02:00:00+00:00',
+    'wd': 104.2,
+    'ws': 5.1,
+    'wg': 6.0,
+    'precp': 0.0,
+    'cloud': 49.4,
+    'tx': 25.6,
+    'rh': 74.6,
+    'pres': 1008.3,
+    'lat': 20.0,
+    'lon': 120.0
+}...]
 ```
 
 ### 參數說明
@@ -77,7 +104,7 @@ $ pip install WeatherData
 - wg: 最大陣風風速(m/s)
 - prcep: 預報小時雨量(mm)
 - prcep_hour: 觀測小時雨量(mm)
-- cloud: 雲量 0~1
+- cloud: 雲量 0~100
 - tx: 溫度(攝氏溫度)
 - rh: 相對濕度
 - pres: 大氣壓力(hPa)
