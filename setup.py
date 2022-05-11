@@ -30,7 +30,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/cloudybay/weatherdata-sdk",
     keywords=['weather', 'forecast', 'observation', 'taiwan'],
-    install_requires=['pytz', 'requests'],
+    install_requires=['pytz', 'requests', 'urllib3'],
     packages=["WeatherData"],
     package_dir={"": "src"},
     classifiers=[
