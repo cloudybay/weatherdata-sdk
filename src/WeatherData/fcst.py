@@ -3,8 +3,8 @@ import requests
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
-import urllib3
-urllib3.disable_warnings()
+import requests.packages.urllib3
+requests.packages.urllib3.disable_warnings()
 
 
 WD_API_SERVER_HOST = 'http://api.weatherdata.tw/'

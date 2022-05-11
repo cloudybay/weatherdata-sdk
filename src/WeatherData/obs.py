@@ -6,8 +6,8 @@ import requests
 from WeatherData.util import parse_city_town_to_region_code
 from WeatherData.region_code import RegionCodeInfo
 
-import urllib3
-urllib3.disable_warnings()
+import requests.packages.urllib3
+requests.packages.urllib3.disable_warnings()
 
 
 WD_API_SERVER_HOST = 'http://api.weatherdata.tw/'
@@ -46,7 +46,6 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
             raise TypeError('argument dtime must be datetime, not string')
 
     if lat and lon and dtime:
-        # http://gpu.cb:7705/api/obs/cb_grid/?lat=25.068025&lon=121.507228&from=2022-03-02T15:00&to=2022-03-02T15:00&
         url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
         res = requests.get(url, headers=get_wd_api_header(), verify=False)
         if res.status_code == 200:
