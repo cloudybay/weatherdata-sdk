@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="./Logo.png?raw=true">
+  <img src="https://raw.githubusercontent.com/cloudybay/weatherdata-sdk/main/Logo.png">
 </p>
 
----
+
 
 ## 這是什麼?
 
