@@ -102,8 +102,8 @@ $ pip install WeatherData
 - wd: 風向(方位角 0~360度 北向為0)
 - ws: 風速(m/s)
 - wg: 最大陣風風速(m/s)
-- prcep: 預報小時雨量(mm)
-- prcep_hour: 觀測小時雨量(mm)
+- precp: 預報小時雨量(mm)
+- precp_hour: 觀測小時雨量(mm)
 - cloud: 雲量 0~100
 - tx: 溫度(攝氏溫度)
 - rh: 相對濕度

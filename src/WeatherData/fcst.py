@@ -33,15 +33,19 @@ def get(lat: float = None, lon: float = None, citytown: str = None):
             raise KeyError()
 
     if lat and lon:
-        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/?lat={lat}&lon={lon}'
-        res = requests.get(url, headers=get_wd_api_header(), verify=False)
-        if res.status_code == 200:
-            # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
-            fcst_data = res.json().get('data', None)
-            if fcst_data:
-                return fcst_data
-            else:
-                return []
+        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf'
+        res = requests.get(url, headers=get_wd_api_header(), verify=False, params={
+            'lat': lat,
+            'lon': lon
+        })
+        res.raise_for_status()
+        # WD的CWB Wrf逐六小時報， 找出使用者的時間點最接近的前後時間點預報值回傳 [{}, {}]
+        fcst_data = res.json().get('data', None)
+        if fcst_data:
+            return fcst_data
+        else:
+            return []
+
 
 def get_wd_api_header():
     token = 'caccfc7087e0441591b531ba944f06b6'

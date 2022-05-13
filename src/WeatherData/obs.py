@@ -36,7 +36,7 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
             raise KeyError()
 
     if isinstance(dtime, datetime):
-        dtime = dtime.replace(tzinfo=pytz.UTC)
+        dtime = dtime.replace(tzinfo=pytz.UTC).isoformat()
     else:
         if dtime is None:
             dtime = datetime.utcnow()
@@ -46,15 +46,20 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
             raise TypeError('argument dtime must be datetime, not string')
 
     if lat and lon and dtime:
-        url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/?lat={lat}&lon={lon}&from={dtime}&to={dtime}'
-        res = requests.get(url, headers=get_wd_api_header(), verify=False)
-        if res.status_code == 200:
-            # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
-            obs_data = res.json().get('data', None)
-            if obs_data:
-                return obs_data[0]
-            else:
-                return obs_data
+        url = f'{WD_API_SERVER_HOST}api/obs/cb_grid/'
+        res = requests.get(url, headers=get_wd_api_header(), verify=False, params={
+            'lat': lat,
+            'lon': lon,
+            'from': dtime,
+            'to': dtime
+        })
+        res.raise_for_status()
+        # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
+        obs_data = res.json().get('data', None)
+        if obs_data:
+            return obs_data[0]
+        else:
+            return obs_data
 
 
 def get_wd_api_header():
