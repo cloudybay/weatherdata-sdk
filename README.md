@@ -98,6 +98,13 @@ $ pip install WeatherData
 
 ### 參數說明
 
+#### 輸入參數
+- dtime: 資料時間(UTC)
+- citytown: 縣市+鄉鎮
+- lat: 緯度
+- lon: 經度
+
+#### 輸出參數
 - dtime: 資料時間(UTC)
 - wd: 風向(方位角 0~360度 北向為0)
 - ws: 風速(m/s)
