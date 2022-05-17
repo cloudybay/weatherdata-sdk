@@ -33,7 +33,7 @@ def get(lat: float = None, lon: float = None, citytown: str = None):
             raise KeyError()
 
     if lat and lon:
-        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf'
+        url = f'{WD_API_SERVER_HOST}api/fcst/angel_wrf/'
         res = requests.get(url, headers=get_wd_api_header(), verify=False, params={
             'lat': lat,
             'lon': lon
