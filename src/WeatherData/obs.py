@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytz
 import requests
@@ -38,10 +38,13 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
     if isinstance(dtime, datetime):
         dtime = dtime.replace(tzinfo=pytz.UTC).isoformat()
     else:
+        # WD 尚有缺陷，只好用往前3小時時間範圍的方式抓到最新觀測
         if dtime is None:
-            dtime = datetime.utcnow()
+            dtime = datetime.utcnow() + timedelta(hours=-3)
             dtime = dtime.replace(tzinfo=pytz.UTC)
-            dtime = dtime.replace(minute=0, second=0, microsecond=0).isoformat()
+            dtime = dtime.replace(minute=0, second=0, microsecond=0)
+            dt_from = dtime.isoformat()
+            dt_to = (dtime + timedelta(hours=3)).isoformat()
         else:
             raise TypeError('argument dtime must be datetime, not string')
 
@@ -50,14 +53,14 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
         res = requests.get(url, headers=get_wd_api_header(), verify=False, params={
             'lat': lat,
             'lon': lon,
-            'from': dtime,
-            'to': dtime
+            'from': dt_from,
+            'to': dt_to
         })
         res.raise_for_status()
         # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
         obs_data = res.json().get('data', None)
         if obs_data:
-            return obs_data[0]
+            return obs_data[-1]
         else:
             return obs_data
 
