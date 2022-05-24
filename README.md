@@ -118,6 +118,15 @@ $ pip install WeatherData
 - lat: 緯度(度)
 - lon: 經度(度)
 
+### 錯誤排除
+
+
+```
+requests.exceptions.HTTPError: 503 Server Error: Service Temporarily Unavailable
+```
+
+如果出現以上 503 Server Error ， 可以等個 10 秒鐘再試試看。
+
 ## 資料來源
 
 - [氣象資料開放平台](https://opendata.cwb.gov.tw/index)
