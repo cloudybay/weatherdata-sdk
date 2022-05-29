@@ -53,8 +53,8 @@ def get(lat: float = None, lon: float = None, dtime: datetime = None, citytown: 
         res = requests.get(url, headers=get_wd_api_header(), verify=False, params={
             'lat': lat,
             'lon': lon,
-            'from': dt_from,
-            'to': dt_to
+            'from': dtime,
+            'to': dtime
         })
         res.raise_for_status()
         # WD回傳是一個list 目前都只要單點時間，所以只會有一筆資料
